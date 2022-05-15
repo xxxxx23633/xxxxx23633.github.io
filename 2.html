@@ -1,0 +1,58 @@
+<body>
+  <h1>简单Web留言本</h1>
+  <textarea id="memo" cols="60" rows="6"></textarea><br />
+  <input type="button" value="新增留言" onclick="saveStorage('memo');" />
+  <input type="button" value="清空数据" onclick="clearStorage();" />
+  <input
+    type="button"
+    value="清空最后一个数据"
+    onclick="clearsingleStorage();"
+  />
+  <hr />
+  <p id="msg"></p>
+  <script type="text/javascript">
+    //savaStorage是一个新增留言的函数
+    function saveStorage(id) {
+      //获取textarea的value值
+      var data = document.getElementById(id).value;
+      //获取当前时间
+      var time = new Date().toUTCString();
+      //将当前时间作为键名，textarea的value值（也就是用户输入的值）的值作为键值
+      localStorage.setItem(time, data);
+      //显示留言
+      showMsg("msg");
+    }
+    //showMsg是一个显示留言的函数
+    function showMsg(id) {
+      var result = '<table border="1">';
+      //遍历本地储存数据
+      for (var i = 0; i < localStorage.length; i++) {
+        //获取key值
+        var key = localStorage.key(i);
+
+        //获取value值
+        var value = localStorage.getItem(key);
+        //显示数据
+        result += "<tr><td>" + value + "</td><td>" + key + "</td></tr>";
+      }
+      result += "</table>";
+      var target = document.getElementById(id);
+      target.innerHTML = result;
+    }
+    //显示留言
+    showMsg("msg");
+    //clearStorage是一个清空留言的函数
+    function clearStorage() {
+      //清空数据
+      localStorage.clear();
+      //显示留言
+      showMsg("msg");
+    }
+    //clearsingleStorage是一个删除单个数据的函数
+    function clearsingleStorage() {
+      localStorage.removeItem(localStorage.key(localStorage.length - 1));
+      //显示留言
+      showMsg("msg");
+    }
+  </script>
+</body>
